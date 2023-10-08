@@ -9,7 +9,7 @@ using { /UnrealEngine.com/Temporary/Diagnostics }
 # A Verse-authored creative device that can be placed in a level
 game_manager_device := class(creative_device):
 
-    @editable CreatureSpawner: creature_spawner_device = creature_spawner_device{}
+    @editable CreatureSpawners: []creature_spawner_device = array{}
     @editable GoldGranter: item_granter_device = item_granter_device{}
     @editable SpawnDevice:player_spawner_device = player_spawner_device{}
     @editable HudManager:hud_manager_device = hud_manager_device{}
@@ -20,9 +20,11 @@ game_manager_device := class(creative_device):
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
+        for(Index : int = 0..CreatureSpawners.Length - 1 ):
+            if(CreatureSpawner := CreatureSpawners[Index]):
+                CreatureSpawner.EliminatedEvent.Subscribe(OnCreatureEliminated)
         SpawnDevice.SpawnedEvent.Subscribe(OnPlayerSpawned)
-        CreatureSpawner.EliminatedEvent.Subscribe(OnCreatureEliminated)
-
+        
     OnPlayerSpawned(Agent: agent):void=
         set CurrentAgent = option{Agent}
 
