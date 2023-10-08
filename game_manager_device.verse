@@ -11,26 +11,32 @@ game_manager_device := class(creative_device):
 
     @editable CreatureSpawner: creature_spawner_device = creature_spawner_device{}
     @editable GoldGranter: item_granter_device = item_granter_device{}
+    @editable SpawnDevice:player_spawner_device = player_spawner_device{}
+    @editable HudManager:hud_manager_device = hud_manager_device{}
     
-    var ScoreLevel:int = 1
-    var TotalScore:int = 0
+    var CurrentAgent: ?agent = false
+    var GoldPerKill:int = 1
+    var CurrentGold:int = 0
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
+        SpawnDevice.SpawnedEvent.Subscribe(OnPlayerSpawned)
         CreatureSpawner.EliminatedEvent.Subscribe(OnCreatureEliminated)
 
+    OnPlayerSpawned(Agent: agent):void=
+        set CurrentAgent = option{Agent}
+
+
     OnCreatureEliminated(Res:device_ai_interaction_result):void =
-        if(Agent := Res.Source?):
+        if(Agent := CurrentAgent?):
+            set CurrentGold = CurrentGold + GoldPerKill
             GoldGranter.GrantItem(Agent)
-        set TotalScore = TotalScore + ScoreLevel
-        Print("Score ={TotalScore}")
+            HudManager.ShowGold(CurrentGold)
+        Print("CurrentGold ={CurrentGold}")
 
-    GetCurrentScore<public>():int =
-        return TotalScore
-
-    ConsumeScore<public>(Amount: int):logic =
-        if (TotalScore >= Amount):
-            set TotalScore = TotalScore - Amount
+    ConsumeGold<public>(Amount: int):logic =
+        if (CurrentGold >= Amount):
+            set CurrentGold = CurrentGold - Amount
             return true
         else:
             return false
