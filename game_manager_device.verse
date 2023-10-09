@@ -16,6 +16,8 @@ game_manager_device := class(creative_device):
     @editable VendingMachines1: []vending_machine_device = array{}
     @editable VendingMachines10: []vending_machine_device = array{}
     @editable VendingMachines100: []vending_machine_device = array{}
+
+    
     
     var CurrentAgent: ?agent = false
     var GoldPerKill:int = 1
@@ -23,6 +25,7 @@ game_manager_device := class(creative_device):
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
+        Print("GameManager OnBegin")
         for(Index : int = 0..CreatureSpawners.Length - 1 ):
             if(CreatureSpawner := CreatureSpawners[Index]):
                 CreatureSpawner.EliminatedEvent.Subscribe(OnCreatureEliminated)
@@ -46,7 +49,7 @@ game_manager_device := class(creative_device):
     OnPurchased100(Agent: agent):void =
         OnPurchased(100)
 
-    OnPurchased<private>(value: int):void =
+    OnPurchased(value: int):void =
         set CurrentGold = CurrentGold - value
         ShowGold()
     

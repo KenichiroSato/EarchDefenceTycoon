@@ -11,6 +11,7 @@ unlock_device := class(creative_device):
     @editable Billboard: billboard_device = billboard_device{}
     @editable Beacon: beacon_device = beacon_device{}
     @editable Button: conditional_button_device = conditional_button_device{}
+    @editable GameManager: game_manager_device = game_manager_device{}
 
     # list of unlock_device that must be activated before this device is enabled.
     @editable DependsDevices: []unlock_device = array{}
@@ -36,8 +37,10 @@ unlock_device := class(creative_device):
             spawn{EnableWithDelay()}
 
     OnActivated(Agent: agent):void =
-        Print("OnActivated")
+        Cost:int = Button.GetItemCountRequired(0)
+        Print("OnActivated Cost={Cost}")
         Disable()
+        GameManager.OnPurchased(Cost)
         for(Index : int = 0..DisableTargets.Length - 1 ):
             if(DisableTarget := DisableTargets[Index]):
                 DisableTarget.Disable()
