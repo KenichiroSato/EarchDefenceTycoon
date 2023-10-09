@@ -22,9 +22,13 @@ unlock_device := class(creative_device):
     OnBegin<override>()<suspends>:void=
         Billboard.HideText()
         Button.ActivatedEvent.Subscribe(OnActivated)
-        for(Index : int = 0..DependsDevices.Length - 1 ):
-            if(Target := DependsDevices[Index]):
-                Target.Button.ActivatedEvent.Subscribe(OnDependDeviceActivated)
+        SubscribeDependButtonActivation()
+
+    SubscribeDependButtonActivation<private>():void =
+        if (DependsDevices.Length > 0):
+            for(Index : int = 0..DependsDevices.Length - 1 ):
+                if(Target := DependsDevices[Index]):
+                    Target.Button.ActivatedEvent.Subscribe(OnDependDeviceActivated)
 
     OnDependDeviceActivated(Agent: agent):void = 
         set DependDeviceActivatedCount = DependDeviceActivatedCount + 1
@@ -32,6 +36,7 @@ unlock_device := class(creative_device):
             spawn{EnableWithDelay()}
 
     OnActivated(Agent: agent):void =
+        Print("OnActivated")
         Disable()
         for(Index : int = 0..DisableTargets.Length - 1 ):
             if(DisableTarget := DisableTargets[Index]):
