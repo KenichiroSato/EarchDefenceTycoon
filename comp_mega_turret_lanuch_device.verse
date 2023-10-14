@@ -8,16 +8,28 @@ using { /UnrealEngine.com/Temporary/Diagnostics }
 # A Verse-authored creative device that can be placed in a level
 comp_mega_turret_lanuch_device := class(creative_device):
 
+    @editable EmergeButton: button_device = button_device{}
+    @editable DownButton: button_device = button_device{}
+
     @editable Button: conditional_button_device = conditional_button_device{}
     @editable CannonFire: vfx_spawner_device = vfx_spawner_device{}
     @editable FireFish1: vfx_spawner_device = vfx_spawner_device{}
     @editable FireFish2: vfx_spawner_device = vfx_spawner_device{}
     @editable FireFish3: vfx_spawner_device = vfx_spawner_device{}
 
+    @editable Monster: fish_monster = fish_monster{}
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
         Button.ActivatedEvent.Subscribe(OnActivated)
+        EmergeButton.InteractedWithEvent.Subscribe(OnEmerge)
+        DownButton.InteractedWithEvent.Subscribe(OnDown)
+
+    OnEmerge(Agent:agent):void =
+        Monster.Emerge()
+
+    OnDown(Agent: agent):void =
+        Monster.Collapse()
 
     OnActivated(Agent: agent):void =
         spawn{ LaunchAnimation() }
