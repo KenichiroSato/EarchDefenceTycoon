@@ -9,8 +9,9 @@ using { /UnrealEngine.com/Temporary/SpatialMath }
 # A Verse-authored creative device that can be placed in a level
 fish_monster := class(creative_device):
 
-    EmergeDistance<private>: float = 12000.0
-    HideDistance<private>: float = -12000.0
+    #ボスは20000.0  fishは12000.0
+    EmergeDistance<private>: float = 20000.0
+    HideDistance<private>: float = -20000.0
     BounceDistance<private>: float = 100.0
 
     @editable var MonsterProp: creative_prop = creative_prop{}
@@ -28,22 +29,24 @@ fish_monster := class(creative_device):
         spawn{EmergeAndBounce()}
 
     EmergeAndBounce<private>()<suspends>:void =
-        Move(EmergeDistance, InitialRotation, 0.5)
-        Bounce()
+        Move(EmergeDistance, InitialRotation, 1.0)
+        #Bounce()
 
     Bounce<private>()<suspends>:void =
         loop:
+            Print("Bounce")
             if (IsDefeated?):
                 Print("break")
                 break
             Move(BounceDistance, InitialRotation, 0.7)
             Move(BounceDistance*(-1.0), InitialRotation, 0.7)
+            Sleep(0.1)
 
     Collapse():void =
         Print("Collapse")
         set IsDefeated = true
-        NewRotation := MakeRotationFromYawPitchRollDegrees(0.0, 40.0, 0.0)
-        spawn{Move(HideDistance, NewRotation, 2.0)}
+        NewRotation := InitialRotation.ApplyPitch(-5.0)
+        spawn{Move(HideDistance, NewRotation, 5.0)}
 
     Move<private>(Dist: float, Rotation: rotation, Duration: float)<suspends>: void =
         Transform := MonsterProp.GetTransform()

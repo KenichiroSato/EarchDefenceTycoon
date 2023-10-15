@@ -11,6 +11,9 @@ comp_mega_turret_lanuch_device := class(creative_device):
     @editable EmergeButton: conditional_button_device = conditional_button_device{}
     @editable DownButton: conditional_button_device = conditional_button_device{}
 
+    @editable TestUpButton: button_device = button_device{}
+    @editable TestDownButton: button_device = button_device{}
+
     @editable Button: conditional_button_device = conditional_button_device{}
     @editable CannonFire: vfx_spawner_device = vfx_spawner_device{}
     @editable FireFish1: vfx_spawner_device = vfx_spawner_device{}
@@ -24,6 +27,8 @@ comp_mega_turret_lanuch_device := class(creative_device):
         Button.ActivatedEvent.Subscribe(OnActivated)
         EmergeButton.ActivatedEvent.Subscribe(OnEmerge)
         DownButton.ActivatedEvent.Subscribe(OnDown)
+        TestUpButton.InteractedWithEvent.Subscribe(OnEmerge)
+        TestDownButton.InteractedWithEvent.Subscribe(OnDown)
 
     OnEmerge(Agent:agent):void =
         Monster.Emerge()
