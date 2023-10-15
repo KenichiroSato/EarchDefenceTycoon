@@ -8,8 +8,8 @@ using { /UnrealEngine.com/Temporary/Diagnostics }
 # A Verse-authored creative device that can be placed in a level
 comp_mega_turret_lanuch_device := class(creative_device):
 
-    @editable EmergeButton: button_device = button_device{}
-    @editable DownButton: button_device = button_device{}
+    @editable EmergeButton: conditional_button_device = conditional_button_device{}
+    @editable DownButton: conditional_button_device = conditional_button_device{}
 
     @editable Button: conditional_button_device = conditional_button_device{}
     @editable CannonFire: vfx_spawner_device = vfx_spawner_device{}
@@ -22,8 +22,8 @@ comp_mega_turret_lanuch_device := class(creative_device):
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
         Button.ActivatedEvent.Subscribe(OnActivated)
-        EmergeButton.InteractedWithEvent.Subscribe(OnEmerge)
-        DownButton.InteractedWithEvent.Subscribe(OnDown)
+        EmergeButton.ActivatedEvent.Subscribe(OnEmerge)
+        DownButton.ActivatedEvent.Subscribe(OnDown)
 
     OnEmerge(Agent:agent):void =
         Monster.Emerge()
@@ -45,12 +45,14 @@ comp_mega_turret_lanuch_device := class(creative_device):
         for(Index : int = 0..3 ):
             Print("Fire!")
             Sleep(0.1)
-            FireFish3.Disable()
             FireFish1.Enable()
+            FireFish2.Disable()
             Sleep(0.1)
-            FireFish1.Disable()
+            FireFish3.Disable()
             FireFish2.Enable()
             Sleep(0.1)
-            FireFish2.Disable()
+            FireFish1.Disable()
             FireFish3.Enable()
+
+        Monster.Collapse()
         

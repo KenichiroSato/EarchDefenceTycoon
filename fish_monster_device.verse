@@ -9,33 +9,42 @@ using { /UnrealEngine.com/Temporary/SpatialMath }
 # A Verse-authored creative device that can be placed in a level
 fish_monster := class(creative_device):
 
+    EmergeDistance<private>: float = 12000.0
+    HideDistance<private>: float = -12000.0
+    BounceDistance<private>: float = 100.0
+
     @editable var MonsterProp: creative_prop = creative_prop{}
     var InitialPosition<private>: vector3 = vector3{X:=0.0, Y:= 0.0, Z:=0.0}
     var InitialRotation<private>: rotation = rotation{}
-    EmergeDistance<private>: float = 10000.0
-    HideDistance<private>: float = -10000.0
+    var IsDefeated<private>: logic = false
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
         set InitialPosition = MonsterProp.GetTransform().Translation
         set InitialRotation = MonsterProp.GetTransform().Rotation
-        MoveToHidePosition()
-
-    MoveToHidePosition<private>():void =
-        spawn{Move(HideDistance, 0.1)}
 
     Emerge(): void =
-        spawn{Move(EmergeDistance, 0.2)}
+        set IsDefeated = false
+        spawn{EmergeAndBounce()}
+
+    EmergeAndBounce<private>()<suspends>:void =
+        Move(EmergeDistance, InitialRotation, 0.5)
+        Bounce()
+
+    Bounce<private>()<suspends>:void =
+        loop:
+            if (IsDefeated?):
+                Print("break")
+                break
+            Move(BounceDistance, InitialRotation, 0.7)
+            Move(BounceDistance*(-1.0), InitialRotation, 0.7)
 
     Collapse():void =
-        spawn:
-            CollapseWithSpawn()
-
-    CollapseWithSpawn()<suspends>:void =
-        Transform := MonsterProp.GetTransform()
+        Print("Collapse")
+        set IsDefeated = true
         NewRotation := MakeRotationFromYawPitchRollDegrees(0.0, 40.0, 0.0)
-        MonsterProp.MoveTo(Transform.Translation + vector3{X:=0.0, Y:=0.0, Z:=HideDistance}, NewRotation, 2.0)
+        spawn{Move(HideDistance, NewRotation, 2.0)}
 
-    Move(Dist: float, Duration: float)<suspends>: void =
+    Move<private>(Dist: float, Rotation: rotation, Duration: float)<suspends>: void =
         Transform := MonsterProp.GetTransform()
-        MonsterProp.MoveTo(Transform.Translation + vector3{X:=0.0, Y:=0.0, Z:=Dist}, Transform.Rotation, Duration)
+        MonsterProp.MoveTo(Transform.Translation + vector3{X:=0.0, Y:=0.0, Z:=Dist}, Rotation, Duration)
