@@ -9,9 +9,12 @@ using { /UnrealEngine.com/Temporary/SpatialMath }
 # A Verse-authored creative device that can be placed in a level
 fish_monster := class(creative_device):
 
-    #ボスは20000.0  fishは12000.0
-    EmergeDistance<private>: float = 20000.0
-    HideDistance<private>: float = -20000.0
+    #ボスは20000.0  fishは12000.0 jawは13000
+    #初期位置 fish: 6300 - 12000 = -5700 
+    #初期位置 jaw: 3500 - 13000 = -9500 
+    #初期位置 boss: 6600 - 20000 = -13400 
+    @editable EmergeDistance: float = 20000.0
+    @editable HideDistance: float = -20000.0
     BounceDistance<private>: float = 100.0
 
     @editable var MonsterProp: creative_prop = creative_prop{}
@@ -30,6 +33,7 @@ fish_monster := class(creative_device):
 
     EmergeAndBounce<private>()<suspends>:void =
         Move(EmergeDistance, InitialRotation, 1.0)
+        #Disable bounce for performance reason
         #Bounce()
 
     Bounce<private>()<suspends>:void =

@@ -15,11 +15,9 @@ comp_mega_turret_lanuch_device := class(creative_device):
     @editable TestDownButton: button_device = button_device{}
 
     @editable Button: conditional_button_device = conditional_button_device{}
-    @editable CannonFire: vfx_spawner_device = vfx_spawner_device{}
-    @editable FireFish1: vfx_spawner_device = vfx_spawner_device{}
-    @editable FireFish2: vfx_spawner_device = vfx_spawner_device{}
-    @editable FireFish3: vfx_spawner_device = vfx_spawner_device{}
-
+    @editable CanonFires: []vfx_spawner_device = array{}
+    @editable HitFires: []vfx_spawner_device = array{}
+    
     @editable Monster: fish_monster = fish_monster{}
 
     # Runs when the device is started in a running game
@@ -31,6 +29,7 @@ comp_mega_turret_lanuch_device := class(creative_device):
         TestDownButton.InteractedWithEvent.Subscribe(OnDown)
 
     OnEmerge(Agent:agent):void =
+        Print("OnEmerge")
         Monster.Emerge()
 
     OnDown(Agent: agent):void =
@@ -40,24 +39,24 @@ comp_mega_turret_lanuch_device := class(creative_device):
         spawn{ LaunchAnimation() }
 
     LaunchAnimation()<suspends>:void =
-        for(Index : int = 0..3 ):
-            Print("Fire!")
-            Sleep(0.3)
-            CannonFire.Enable()
-            Sleep(0.3)
-            CannonFire.Disable()
+        for(Index : int = 0..CanonFires.Length - 1 ):
+            if(CanonFire := CanonFires[Index]):           
+                Print("Fire!")
+                Sleep(0.5)
+                CanonFire.Enable()
 
-        for(Index : int = 0..3 ):
-            Print("Fire!")
-            Sleep(0.1)
-            FireFish1.Enable()
-            FireFish2.Disable()
-            Sleep(0.1)
-            FireFish3.Disable()
-            FireFish2.Enable()
-            Sleep(0.1)
-            FireFish1.Disable()
-            FireFish3.Enable()
+        for (Indexx: int = 0..2):
+            for(Index : int = 0..HitFires.Length - 1 ):
+                if(HitFire := HitFires[Index]):           
+                    Print("Hit!")
+                    HitFire.Enable()
+                    Sleep(0.1)
+            for(Index : int = 0..HitFires.Length - 1 ):
+                if(HitFire := HitFires[Index]):
+                    HitFire.Disable()      
 
         Monster.Collapse()
+        for(Index : int = 0..CanonFires.Length - 1 ):
+            if(CanonFire := CanonFires[Index]):   
+                CanonFire.Disable()
         
