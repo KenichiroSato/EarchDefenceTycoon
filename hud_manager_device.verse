@@ -9,6 +9,7 @@ using { /UnrealEngine.com/Temporary/Diagnostics }
 hud_manager_device := class(creative_device):
 
     @editable GoldMessage: hud_message_device = hud_message_device{}
+    @editable MainMessage: hud_message_device = hud_message_device{}
 
 
     # Runs when the device is started in a running game
@@ -18,12 +19,13 @@ hud_manager_device := class(creative_device):
         Print("2 + 2 = {2 + 2}")
 
     ShowGold(GoldCount: int):void =
-        ShowMessage(GoldMessage,"Current Gold={GoldCount}")
+        GoldMessage.Hide()
+        GoldMessage.SetText(StringToMessage("Current Gold={GoldCount}"))
+        GoldMessage.Show()
 
 
-    ShowMessage<private>(Device: hud_message_device, Message: string) : void =
-        Device.Hide()
-        Device.SetText(StringToMessage(Message))
-        Device.Show()
+    ShowMainMessage(Message: string) : void =
+        MainMessage.Hide()
+        MainMessage.Show(StringToMessage(Message))
 
     StringToMessage<localizes>(value:string) : message = "{value}"
