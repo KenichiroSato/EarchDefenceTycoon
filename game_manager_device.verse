@@ -20,7 +20,6 @@ game_manager_device := class(creative_device):
     
     @editable SpawnDevice:player_spawner_device = player_spawner_device{}
     @editable HudManager:hud_manager_device = hud_manager_device{}
-    @editable VendingMachine1: vending_machine_device = vending_machine_device{}
     @editable VendingMachines10: []vending_machine_device = array{}
     @editable VendingMachines100: []vending_machine_device = array{}
 
@@ -50,7 +49,6 @@ game_manager_device := class(creative_device):
         ButtonPerKill_16.ActivatedEvent.Subscribe(OnActivatedPerKill_16)
         ButtonPerKill_32.ActivatedEvent.Subscribe(OnActivatedPerKill_32)
         set CurrentGranter = GoldGranter
-        HudManager.ShowMainMessage("Buy weapon with Gold!")
 
     OnActivatedPerKill_2(Agent: agent):void =
         set GoldPerKill = 2
@@ -69,7 +67,6 @@ game_manager_device := class(creative_device):
         set CurrentGranter = GoldGranter32
 
     SubscribeVindingMachines():void =
-        VendingMachine1.ItemSpawnedEvent.Subscribe(OnPurchased1)
         for(Index : int = 0..VendingMachines10.Length - 1 ):
             if(Machine := VendingMachines10[Index]):
                 Machine.ItemSpawnedEvent.Subscribe(OnPurchased10)
@@ -77,8 +74,6 @@ game_manager_device := class(creative_device):
             if(Machine := VendingMachines100[Index]):
                 Machine.ItemSpawnedEvent.Subscribe(OnPurchased100)
 
-    OnPurchased1(Agent: agent):void =
-        HudManager.ShowMainMessage("Shoot monsters and earn Golds!!")
 
     OnPurchased10(Agent: agent):void =
         OnPurchased(10)

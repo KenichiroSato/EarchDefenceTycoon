@@ -46,7 +46,7 @@ unlock_device := class(creative_device):
                 DisableTarget.Disable()
 
     EnableWithDelay()<suspends>:void =
-        Sleep(3.0)
+        Sleep(1.0)
         Enable()
 
     Enable():void =

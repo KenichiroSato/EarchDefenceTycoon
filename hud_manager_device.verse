@@ -10,14 +10,16 @@ hud_manager_device := class(creative_device):
 
     @editable GoldMessage: hud_message_device = hud_message_device{}
     @editable MainMessage: hud_message_device = hud_message_device{}
-
+    @editable VendingMachine1: vending_machine_device = vending_machine_device{}
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
-        # TODO: Replace this with your code
-        Print("Hello, world!")
-        Print("2 + 2 = {2 + 2}")
+        VendingMachine1.ItemSpawnedEvent.Subscribe(OnPurchased1)
+        ShowMainMessage("Buy weapon with Gold!")
 
+    OnPurchased1(Agent: agent):void =
+        ShowMainMessage("Shoot monsters and earn Golds!!")
+    
     ShowGold(GoldCount: int):void =
         GoldMessage.Hide()
         GoldMessage.SetText(StringToMessage("Current Gold={GoldCount}"))
@@ -29,3 +31,15 @@ hud_manager_device := class(creative_device):
         MainMessage.Show(StringToMessage(Message))
 
     StringToMessage<localizes>(value:string) : message = "{value}"
+
+    OnMonsterEmerged():void =
+        spawn{ShowMonsterEmergedMessage()}
+
+    ShowMonsterEmergedMessage()<suspends>:void =
+        ShowMainMessage("Giand monster has arrived!")
+        Sleep(4.0)
+        ShowMainMessage("Build a mega turret gun and defeat it!")
+
+    OnMonsterDefeated():void =
+        ShowMainMessage("You made it!!")
+    
