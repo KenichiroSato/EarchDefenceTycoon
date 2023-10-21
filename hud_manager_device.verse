@@ -11,6 +11,8 @@ hud_manager_device := class(creative_device):
     @editable GoldMessage: hud_message_device = hud_message_device{}
     @editable MainMessage: hud_message_device = hud_message_device{}
     @editable VendingMachine1: vending_machine_device = vending_machine_device{}
+    @editable AudioPlayer: audio_player_device = audio_player_device{}
+    @editable BGMPlayer: radio_device = radio_device{}
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
@@ -33,6 +35,7 @@ hud_manager_device := class(creative_device):
     StringToMessage<localizes>(value:string) : message = "{value}"
 
     OnMonsterEmerged():void =
+        BGMPlayer.Play()
         spawn{ShowMonsterEmergedMessage()}
 
     ShowMonsterEmergedMessage()<suspends>:void =
@@ -41,5 +44,7 @@ hud_manager_device := class(creative_device):
         ShowMainMessage("Build a mega turret gun and defeat it!")
 
     OnMonsterDefeated():void =
+        BGMPlayer.Stop()
+        AudioPlayer.Play()
         ShowMainMessage("You made it!!")
     

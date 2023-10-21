@@ -12,6 +12,7 @@ unlock_device := class(creative_device):
     @editable Beacon: beacon_device = beacon_device{}
     @editable Button: conditional_button_device = conditional_button_device{}
     @editable GameManager: game_manager_device = game_manager_device{}
+    @editable AudioPlayer: audio_player_device = audio_player_device{}
 
     # list of unlock_device that must be activated before this device is enabled.
     @editable DependsDevices: []unlock_device = array{}
@@ -37,6 +38,7 @@ unlock_device := class(creative_device):
             spawn{EnableWithDelay()}
 
     OnActivated(Agent: agent):void =
+        AudioPlayer.Play()
         Cost:int = Button.GetItemCountRequired(0)
         Print("OnActivated Cost={Cost}")
         Disable()
