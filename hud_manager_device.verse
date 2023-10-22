@@ -12,7 +12,8 @@ hud_manager_device := class(creative_device):
     @editable MainMessage: hud_message_device = hud_message_device{}
     @editable VendingMachine1: vending_machine_device = vending_machine_device{}
     @editable AudioPlayer: audio_player_device = audio_player_device{}
-    @editable BGMPlayer: radio_device = radio_device{}
+    #@editable BGMPlayer: radio_device = radio_device{}
+    @editable BGMPlayer: audio_player_device = audio_player_device{}
 
     # Runs when the device is started in a running game
     OnBegin<override>()<suspends>:void=
@@ -39,7 +40,7 @@ hud_manager_device := class(creative_device):
         spawn{ShowMonsterEmergedMessage()}
 
     ShowMonsterEmergedMessage()<suspends>:void =
-        ShowMainMessage("Giand monster has arrived!")
+        ShowMainMessage("Giant monster has appeared!")
         Sleep(4.0)
         ShowMainMessage("Build a mega turret gun and defeat it!")
 

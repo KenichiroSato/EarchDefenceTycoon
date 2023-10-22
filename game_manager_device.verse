@@ -13,10 +13,14 @@ game_manager_device := class(creative_device):
 
     @editable GoldGranter: item_granter_device = item_granter_device{}
     @editable GoldGranter2: item_granter_device = item_granter_device{}
-    @editable GoldGranter4: item_granter_device = item_granter_device{}
-    @editable GoldGranter8: item_granter_device = item_granter_device{}
-    @editable GoldGranter16: item_granter_device = item_granter_device{}
-    @editable GoldGranter32: item_granter_device = item_granter_device{}
+    @editable GoldGranter5: item_granter_device = item_granter_device{}
+    @editable GoldGranter10: item_granter_device = item_granter_device{}
+    @editable GoldGranter20: item_granter_device = item_granter_device{}
+    @editable GoldGranter50: item_granter_device = item_granter_device{}
+    @editable GoldGranter100: item_granter_device = item_granter_device{}
+    @editable GoldGranter200: item_granter_device = item_granter_device{}
+    @editable GoldGranter500: item_granter_device = item_granter_device{}
+    @editable GoldGranter1000: item_granter_device = item_granter_device{}
     
     @editable SpawnDevice:player_spawner_device = player_spawner_device{}
     @editable HudManager:hud_manager_device = hud_manager_device{}
@@ -24,10 +28,14 @@ game_manager_device := class(creative_device):
     @editable VendingMachines100: []vending_machine_device = array{}
 
     @editable ButtonPerKill_2: conditional_button_device = conditional_button_device{}
-    @editable ButtonPerKill_4: conditional_button_device = conditional_button_device{}
-    @editable ButtonPerKill_8: conditional_button_device = conditional_button_device{}
-    @editable ButtonPerKill_16: conditional_button_device = conditional_button_device{}
-    @editable ButtonPerKill_32: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_5: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_10: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_20: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_50: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_100: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_200: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_500: conditional_button_device = conditional_button_device{}
+    @editable ButtonPerKill_1000: conditional_button_device = conditional_button_device{}
 
     
     var CurrentAgent: ?agent = false
@@ -44,27 +52,43 @@ game_manager_device := class(creative_device):
         SpawnDevice.SpawnedEvent.Subscribe(OnPlayerSpawned)
         SubscribeVindingMachines()
         ButtonPerKill_2.ActivatedEvent.Subscribe(OnActivatedPerKill_2)
-        ButtonPerKill_4.ActivatedEvent.Subscribe(OnActivatedPerKill_4)
-        ButtonPerKill_8.ActivatedEvent.Subscribe(OnActivatedPerKill_8)
-        ButtonPerKill_16.ActivatedEvent.Subscribe(OnActivatedPerKill_16)
-        ButtonPerKill_32.ActivatedEvent.Subscribe(OnActivatedPerKill_32)
+        ButtonPerKill_5.ActivatedEvent.Subscribe(OnActivatedPerKill_5)
+        ButtonPerKill_10.ActivatedEvent.Subscribe(OnActivatedPerKill_10)
+        ButtonPerKill_20.ActivatedEvent.Subscribe(OnActivatedPerKill_20)
+        ButtonPerKill_50.ActivatedEvent.Subscribe(OnActivatedPerKill_50)
+        ButtonPerKill_100.ActivatedEvent.Subscribe(OnActivatedPerKill_100)
+        ButtonPerKill_200.ActivatedEvent.Subscribe(OnActivatedPerKill_200)
+        ButtonPerKill_500.ActivatedEvent.Subscribe(OnActivatedPerKill_500)
+        ButtonPerKill_1000.ActivatedEvent.Subscribe(OnActivatedPerKill_1000)
         set CurrentGranter = GoldGranter
 
     OnActivatedPerKill_2(Agent: agent):void =
         set GoldPerKill = 2
         set CurrentGranter = GoldGranter2
-    OnActivatedPerKill_4(Agent: agent):void =
-        set GoldPerKill = 4
-        set CurrentGranter = GoldGranter4
-    OnActivatedPerKill_8(Agent: agent):void =
-        set GoldPerKill = 8
-        set CurrentGranter = GoldGranter8
-    OnActivatedPerKill_16(Agent: agent):void =
-        set GoldPerKill = 16
-        set CurrentGranter = GoldGranter16
-    OnActivatedPerKill_32(Agent: agent):void =
-        set GoldPerKill = 32
-        set CurrentGranter = GoldGranter32
+    OnActivatedPerKill_5(Agent: agent):void =
+        set GoldPerKill = 5
+        set CurrentGranter = GoldGranter5
+    OnActivatedPerKill_10(Agent: agent):void =
+        set GoldPerKill = 10
+        set CurrentGranter = GoldGranter10
+    OnActivatedPerKill_20(Agent: agent):void =
+        set GoldPerKill = 20
+        set CurrentGranter = GoldGranter20
+    OnActivatedPerKill_50(Agent: agent):void =
+        set GoldPerKill = 50
+        set CurrentGranter = GoldGranter50
+    OnActivatedPerKill_100(Agent: agent):void =
+        set GoldPerKill = 100
+        set CurrentGranter = GoldGranter100
+    OnActivatedPerKill_200(Agent: agent):void =
+        set GoldPerKill = 200
+        set CurrentGranter = GoldGranter200
+    OnActivatedPerKill_500(Agent: agent):void =
+        set GoldPerKill = 500
+        set CurrentGranter = GoldGranter500
+    OnActivatedPerKill_1000(Agent: agent):void =
+        set GoldPerKill = 1000
+        set CurrentGranter = GoldGranter1000
 
     SubscribeVindingMachines():void =
         for(Index : int = 0..VendingMachines10.Length - 1 ):
