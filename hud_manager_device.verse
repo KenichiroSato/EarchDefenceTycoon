@@ -9,6 +9,7 @@ using { /UnrealEngine.com/Temporary/Diagnostics }
 hud_manager_device := class(creative_device):
 
     @editable GoldMessage: hud_message_device = hud_message_device{}
+    @editable GoldPerKillMessage: hud_message_device = hud_message_device{}
     @editable MainMessage: hud_message_device = hud_message_device{}
     @editable VendingMachine1: vending_machine_device = vending_machine_device{}
     @editable AudioPlayer: audio_player_device = audio_player_device{}
@@ -25,9 +26,13 @@ hud_manager_device := class(creative_device):
     
     ShowGold(GoldCount: int):void =
         GoldMessage.Hide()
-        GoldMessage.SetText(StringToMessage("Current Gold={GoldCount}"))
+        GoldMessage.SetText(StringToMessage("{GoldCount}"))
         GoldMessage.Show()
 
+    ShowGoldPerKill(GoldPerKill: int):void =
+        GoldPerKillMessage.Hide()
+        GoldPerKillMessage.SetText(StringToMessage("{GoldPerKill}"))
+        GoldPerKillMessage.Show()
 
     ShowMainMessage(Message: string) : void =
         MainMessage.Hide()

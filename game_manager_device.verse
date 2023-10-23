@@ -61,34 +61,41 @@ game_manager_device := class(creative_device):
         ButtonPerKill_500.ActivatedEvent.Subscribe(OnActivatedPerKill_500)
         ButtonPerKill_1000.ActivatedEvent.Subscribe(OnActivatedPerKill_1000)
         set CurrentGranter = GoldGranter
-
+        HudManager.ShowGold(CurrentGold)
+        HudManager.ShowGoldPerKill(GoldPerKill)
+        
+        
     OnActivatedPerKill_2(Agent: agent):void =
-        set GoldPerKill = 2
+        UpdateGoldPerKill(2)
         set CurrentGranter = GoldGranter2
     OnActivatedPerKill_5(Agent: agent):void =
-        set GoldPerKill = 5
+        UpdateGoldPerKill(5)
         set CurrentGranter = GoldGranter5
     OnActivatedPerKill_10(Agent: agent):void =
-        set GoldPerKill = 10
+        UpdateGoldPerKill(10)
         set CurrentGranter = GoldGranter10
     OnActivatedPerKill_20(Agent: agent):void =
-        set GoldPerKill = 20
+        UpdateGoldPerKill(20)
         set CurrentGranter = GoldGranter20
     OnActivatedPerKill_50(Agent: agent):void =
-        set GoldPerKill = 50
+        UpdateGoldPerKill(50)
         set CurrentGranter = GoldGranter50
     OnActivatedPerKill_100(Agent: agent):void =
-        set GoldPerKill = 100
+        UpdateGoldPerKill(100)
         set CurrentGranter = GoldGranter100
     OnActivatedPerKill_200(Agent: agent):void =
-        set GoldPerKill = 200
+        UpdateGoldPerKill(200)
         set CurrentGranter = GoldGranter200
     OnActivatedPerKill_500(Agent: agent):void =
-        set GoldPerKill = 500
+        UpdateGoldPerKill(500)
         set CurrentGranter = GoldGranter500
     OnActivatedPerKill_1000(Agent: agent):void =
-        set GoldPerKill = 1000
+        UpdateGoldPerKill(1000)
         set CurrentGranter = GoldGranter1000
+
+    UpdateGoldPerKill<private>(NewValue: int):void =
+        set GoldPerKill = NewValue
+        HudManager.ShowGoldPerKill(GoldPerKill)
 
     SubscribeVindingMachines():void =
         for(Index : int = 0..VendingMachines10.Length - 1 ):
