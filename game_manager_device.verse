@@ -24,8 +24,10 @@ game_manager_device := class(creative_device):
     
     @editable SpawnDevice:player_spawner_device = player_spawner_device{}
     @editable HudManager:hud_manager_device = hud_manager_device{}
+    @editable VendingMachines1: vending_machine_device = vending_machine_device{}
     @editable VendingMachines10: []vending_machine_device = array{}
     @editable VendingMachines100: []vending_machine_device = array{}
+    @editable InitialItemSpawner: item_spawner_device = item_spawner_device{}
 
     @editable ButtonPerKill_2: conditional_button_device = conditional_button_device{}
     @editable ButtonPerKill_5: conditional_button_device = conditional_button_device{}
@@ -60,10 +62,14 @@ game_manager_device := class(creative_device):
         ButtonPerKill_200.ActivatedEvent.Subscribe(OnActivatedPerKill_200)
         ButtonPerKill_500.ActivatedEvent.Subscribe(OnActivatedPerKill_500)
         ButtonPerKill_1000.ActivatedEvent.Subscribe(OnActivatedPerKill_1000)
+        InitialItemSpawner.ItemPickedUpEvent.Subscribe(OnInitialGoldPickedUp)
         set CurrentGranter = GoldGranter
         HudManager.ShowGold(CurrentGold)
         HudManager.ShowGoldPerKill(GoldPerKill)
         
+    OnInitialGoldPickedUp(Agent: agent):void =
+        set CurrentGold = CurrentGold + 1
+        ShowGold()
         
     OnActivatedPerKill_2(Agent: agent):void =
         UpdateGoldPerKill(2)
@@ -98,6 +104,7 @@ game_manager_device := class(creative_device):
         HudManager.ShowGoldPerKill(GoldPerKill)
 
     SubscribeVindingMachines():void =
+        VendingMachines1.ItemSpawnedEvent.Subscribe(OnPurchased1)
         for(Index : int = 0..VendingMachines10.Length - 1 ):
             if(Machine := VendingMachines10[Index]):
                 Machine.ItemSpawnedEvent.Subscribe(OnPurchased10)
@@ -105,6 +112,9 @@ game_manager_device := class(creative_device):
             if(Machine := VendingMachines100[Index]):
                 Machine.ItemSpawnedEvent.Subscribe(OnPurchased100)
 
+
+    OnPurchased1(Agent: agent):void =
+        OnPurchased(1)
 
     OnPurchased10(Agent: agent):void =
         OnPurchased(10)

@@ -17,6 +17,7 @@ hire_soldier_device := class(creative_device):
     @editable HighGradeButton: conditional_button_device = conditional_button_device{}
     @editable ModerateGradeButton: conditional_button_device = conditional_button_device{}
     @editable VeryHighGradeButton: conditional_button_device = conditional_button_device{}
+    @editable CallHereButton: conditional_button_device = conditional_button_device{}
     
     @editable PlayerSpawner:player_spawner_device = player_spawner_device{}
 
@@ -29,6 +30,7 @@ hire_soldier_device := class(creative_device):
         ModerateGradeButton.ActivatedEvent.Subscribe(OnModerateButtonActivated)
         HighGradeButton.ActivatedEvent.Subscribe(OnHighButtonActivated)
         VeryHighGradeButton.ActivatedEvent.Subscribe(OnVeryHighButtonActivated)
+        CallHereButton.ActivatedEvent.Subscribe(OnCallHereActivated)
 
         LowGradeSpawner.SpawnedEvent.Subscribe(OnGuardSpawned)
         ModerateGradeSpawner.SpawnedEvent.Subscribe(OnGuardSpawned)
@@ -36,6 +38,11 @@ hire_soldier_device := class(creative_device):
         VeryHighGradeSpawner.SpawnedEvent.Subscribe(OnGuardSpawned)
 
         PlayerSpawner.SpawnedEvent.Subscribe(OnPlayerSpawned)
+
+    OnCallHereActivated(Agent: agent):void =
+        if(Spawner := CurrentSpawner?):
+            Spawner.Disable()
+            Spawner.Enable()
 
     OnGuardSpawned(Agent: agent):void =
         if (Spawner := CurrentSpawner?):

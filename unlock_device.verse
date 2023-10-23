@@ -13,6 +13,7 @@ unlock_device := class(creative_device):
     @editable Button: conditional_button_device = conditional_button_device{}
     @editable GameManager: game_manager_device = game_manager_device{}
     @editable AudioPlayer: audio_player_device = audio_player_device{}
+    @editable KeepEnableAfterUse: logic = false
 
     # list of unlock_device that must be activated before this device is enabled.
     @editable DependsDevices: []unlock_device = array{}
@@ -45,7 +46,8 @@ unlock_device := class(creative_device):
         GameManager.OnPurchased(Cost)
         for(Index : int = 0..DisableTargets.Length - 1 ):
             if(DisableTarget := DisableTargets[Index]):
-                DisableTarget.Disable()
+                if (KeepEnableAfterUse = false):
+                    DisableTarget.Disable()
 
     EnableWithDelay()<suspends>:void =
         Sleep(1.0)
