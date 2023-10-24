@@ -42,11 +42,11 @@ unlock_device := class(creative_device):
         AudioPlayer.Play()
         Cost:int = Button.GetItemCountRequired(0)
         Print("OnActivated Cost={Cost}")
-        Disable()
+        if (KeepEnableAfterUse = false):
+            Disable()
         GameManager.OnPurchased(Cost)
         for(Index : int = 0..DisableTargets.Length - 1 ):
             if(DisableTarget := DisableTargets[Index]):
-                if (KeepEnableAfterUse = false):
                     DisableTarget.Disable()
 
     EnableWithDelay()<suspends>:void =
