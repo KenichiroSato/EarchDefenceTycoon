@@ -39,6 +39,7 @@ game_manager_device := class(creative_device):
     @editable ButtonPerKill_500: conditional_button_device = conditional_button_device{}
     @editable ButtonPerKill_1000: conditional_button_device = conditional_button_device{}
 
+    @editable BgmManager: bgm_manager = bgm_manager{}
     
     var CurrentAgent: ?agent = false
     var GoldPerKill:int = 1
@@ -115,6 +116,7 @@ game_manager_device := class(creative_device):
 
     OnPurchased1(Agent: agent):void =
         OnPurchased(1)
+        BgmManager.PlayNormalBgm()
 
     OnPurchased10(Agent: agent):void =
         OnPurchased(10)
@@ -139,4 +141,10 @@ game_manager_device := class(creative_device):
     ShowGold<private>():void =
         HudManager.ShowGold(CurrentGold)
 
+    OnMonsterEmerged():void =
+        HudManager.ShowMonsterEmergedMessage()
+        BgmManager.PlayBattleBgm()
 
+    OnMonsterDefeated():void =
+        HudManager.ShowMonsterDefeatedMessage()
+        BgmManager.OnMonsterDefeated()

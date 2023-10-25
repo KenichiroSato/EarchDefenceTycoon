@@ -19,6 +19,7 @@ fish_monster := class(creative_device):
 
     @editable var MonsterProp: creative_prop = creative_prop{}
     @editable HudManager:hud_manager_device = hud_manager_device{}
+    @editable GameManager:game_manager_device = game_manager_device{}
     var InitialPosition<private>: vector3 = vector3{X:=0.0, Y:= 0.0, Z:=0.0}
     var InitialRotation<private>: rotation = rotation{}
     var IsDefeated<private>: logic = false
@@ -34,7 +35,7 @@ fish_monster := class(creative_device):
 
     EmergeAndBounce<private>()<suspends>:void =
         Move(EmergeDistance, InitialRotation, 1.0)
-        HudManager.OnMonsterEmerged()
+        GameManager.OnMonsterEmerged()
         #Disable bounce for performance reason
         #Bounce()
 
@@ -53,7 +54,7 @@ fish_monster := class(creative_device):
         set IsDefeated = true
         NewRotation := InitialRotation.ApplyPitch(-5.0)
         spawn{Move(HideDistance, NewRotation, 5.0)}
-        HudManager.OnMonsterDefeated()
+        GameManager.OnMonsterDefeated()
 
     Move<private>(Dist: float, Rotation: rotation, Duration: float)<suspends>: void =
         Transform := MonsterProp.GetTransform()
